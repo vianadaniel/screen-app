@@ -26,7 +26,7 @@ const CarouselComponent = () => {
 
     return (
         <div className="fullscreen-carousel">
-            <Carousel autoPlay infiniteLoop showThumbs={false}>
+            <Carousel autoPlay infiniteLoop showThumbs={true}>
                 {images.map((image, index) => (
                     <div key={index}>
                         <img src={`data:image/png;base64,${image}`} alt={`Slide ${index}`} />
