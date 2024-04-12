@@ -8,6 +8,17 @@ const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080"
 function App() {
   const [navbarVisible, setNavbarVisible] = useState(true);
   const [fullscreen, setFullscreen] = useState(false);
+  const [carouselInterval, setCarouselInterval] = useState(() => {
+    // Tenta recuperar o intervalo do localStorage, ou usa o valor padrão (5000)
+    const storedInterval = localStorage.getItem('carouselInterval');
+    return storedInterval ? parseInt(storedInterval) : 5000;
+  });
+
+  const [uploadLink, setUploadLink] = useState("/");
+
+  const handleUploadClick = () => {
+    setUploadLink(uploadLink === "/" ? "/upload" : "/");
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -53,6 +64,34 @@ function App() {
       });
   };
 
+  useEffect(() => {
+    localStorage.setItem('carouselInterval', carouselInterval.toString());
+  }, [carouselInterval]);
+
+  const [licenseExpired, setLicenseExpired] = useState(false);
+
+  useEffect(() => {
+
+    const checkLicenseValidity = () => {
+
+      const expirationDate = new Date('2025-04-12');
+      const currentDate = new Date();
+      if (currentDate > expirationDate) {
+        setLicenseExpired(true);
+      }
+    };
+
+    checkLicenseValidity();
+  }, []);
+
+  if (licenseExpired) {
+    return (
+      <div style={{ textAlign: 'center', marginTop: '50vh' }}>
+        <h1>A licença expirou</h1>
+      </div>
+    );
+  }
+
   return (
     <>
       <Router>
@@ -60,12 +99,11 @@ function App() {
           <nav>
             <ul style={{ display: 'flex', justifyContent: 'space-between' }}>
               <li style={{ marginRight: '30px' }}>
-                <Link to="/upload">Upload</Link>
+                <Link to={uploadLink} onClick={handleUploadClick}>
+                  {uploadLink === "/" ? "Upload" : "Upload"}
+                </Link>
               </li>
-              <li>
-                <Link to="/config">Sair</Link>
-              </li>
-              <li style={{ marginLeft: 'auto' }}>
+              <li style={{ marginRight: '30px' }}>
                 <Link onClick={handleDeleteFiles}>Apagar Arquivos</Link>
               </li>
             </ul>
@@ -73,18 +111,17 @@ function App() {
         )}
 
         <Routes>
-          <Route path="/upload" element={<UploadMediaPage />} />
+          <Route path="/upload" element={<UploadMediaPage setCarouselInterval={setCarouselInterval} />} />
           <Route path="/config" element={<ConfigPage />} />
-          {/* Outras rotas da sua aplicação */}
         </Routes>
-      </Router>
+      </Router >
 
       <div
         style={{ width: '100vw', height: '100vh', backgroundColor: 'lightblue' }}
         onClick={handleDivClick}
         onDoubleClick={handleFullscreen}
       >
-        <CarouselComponent />
+        <CarouselComponent interval={carouselInterval} />
       </div>
     </>
   );

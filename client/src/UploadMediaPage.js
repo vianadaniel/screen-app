@@ -1,11 +1,23 @@
 import React, { useState } from 'react';
 const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080"
 
-function UploadMediaPage() {
+function UploadMediaPage({ setCarouselInterval }) {
     const [selectedFile, setSelectedFile] = useState(null);
+    const [newInterval, setNewInterval] = useState(""); // Estado para armazenar o novo intervalo
+
+    const handleIntervalChange = (event) => {
+        setNewInterval(event.target.value);
+    };
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
+    };
+
+
+    const handleSetInterval = () => {
+        if (!isNaN(newInterval) && newInterval !== "") { // Verifica se o novo intervalo é um número válido
+            setCarouselInterval(parseInt(newInterval));
+        }
     };
 
     const handleUpload = () => {
@@ -42,6 +54,11 @@ function UploadMediaPage() {
             <h1>Upload de Arquivos</h1>
             <input type="file" onChange={handleFileChange} />
             <button onClick={handleUpload}>Upload</button>
+            <div style={{ marginTop: '20px' }}>
+                <label htmlFor="intervalInput">Intervalo do Carrossel (padrão: 5000ms): </label>
+                <input id="intervalInput" type="number" value={newInterval} onChange={handleIntervalChange} />
+                <button style={{ marginBottom: '10px', marginLeft: '10px' }} onClick={handleSetInterval}>Definir Intervalo</button>
+            </div>
         </div>
     );
 }

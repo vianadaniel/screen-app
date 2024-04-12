@@ -5,7 +5,7 @@ import './Carousel.css';
 
 const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080";
 
-const CarouselComponent = () => {
+const CarouselComponent = ({ interval }) => {
     const [mediaItems, setMediaItems] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -35,7 +35,7 @@ const CarouselComponent = () => {
 
     return (
         <div className="fullscreen-carousel">
-            <Carousel autoPlay interval={5000} infiniteLoop showThumbs={true} selectedItem={currentIndex}>
+            <Carousel autoPlay interval={interval || 5000} infiniteLoop showThumbs={true} selectedItem={currentIndex}>
                 {mediaItems.map((media, index) => {
                     const isImage = /\.(png|jpg)$/i.test(media.filename);
                     return (
