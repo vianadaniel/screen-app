@@ -1,0 +1,14 @@
+/** @format */
+
+.fullscreen-carousel {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.fullscreen-carousel .carousel .slide img {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+}

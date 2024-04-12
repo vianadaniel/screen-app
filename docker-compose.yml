@@ -1,0 +1,9 @@
+# @format
+
+version: '3'
+services:
+  server:
+    build: .
+    container_name: screen-app
+    ports:
+      - 8080:8080
