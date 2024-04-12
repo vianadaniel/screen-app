@@ -9,6 +9,9 @@ RUN npm install --loglevel=error
 
 COPY . .
 
+# Install react-scripts globally
+RUN npm install -g react-scripts
+
 # Set environment variables
 ENV REACT_APP_API_URL=http://localhost:8080
 ENV SKIP_PREFLIGHT_CHECK=true
