@@ -35,7 +35,7 @@ const CarouselComponent = () => {
 
     return (
         <div className="fullscreen-carousel">
-            <Carousel autoPlay infiniteLoop showThumbs={true} selectedItem={currentIndex}>
+            <Carousel autoPlay interval={5000} infiniteLoop showThumbs={true} selectedItem={currentIndex}>
                 {mediaItems.map((media, index) => {
                     const isImage = /\.(png|jpg)$/i.test(media.filename);
                     return (
@@ -53,7 +53,6 @@ const CarouselComponent = () => {
                 })}
             </Carousel>
         </div>
-
     );
 };
 
