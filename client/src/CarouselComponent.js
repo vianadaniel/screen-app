@@ -1,39 +1,59 @@
-
+import React, { useState, useEffect } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import './Carousel.css';
-import React, { useState, useEffect } from 'react';
-const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080"
+
+const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080";
 
 const CarouselComponent = () => {
-    const [images, setImages] = useState([]);
+    const [mediaItems, setMediaItems] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
-        const fetchImages = async () => {
+        const fetchMediaItems = async () => {
             try {
                 const response = await fetch(apiUrl + '/api/listfiles');
                 if (!response.ok) {
-                    throw new Error('Erro ao buscar imagens');
+                    throw new Error('Erro ao buscar mídias');
                 }
                 const data = await response.json();
-                setImages(data.files.map(file => file.base64data));
+                setMediaItems(data.files);
             } catch (error) {
-                console.error('Erro ao buscar imagens:', error);
+                console.error('Erro ao buscar mídias:', error);
             }
         };
-        fetchImages();
+        fetchMediaItems();
     }, []);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex(prevIndex => (prevIndex + 1) % mediaItems.length);
+        }, 5000); // Altere o intervalo conforme necessário
+
+        return () => clearInterval(interval);
+    }, [mediaItems]);
 
     return (
         <div className="fullscreen-carousel">
-            <Carousel autoPlay infiniteLoop showThumbs={true}>
-                {images.map((image, index) => (
-                    <div key={index}>
-                        <img src={`data:image/png;base64,${image}`} alt={`Slide ${index}`} />
-                    </div>
-                ))}
+            <Carousel autoPlay infiniteLoop showThumbs={true} selectedItem={currentIndex}>
+                {mediaItems.map((media, index) => {
+                    const isImage = /\.(png|jpg)$/i.test(media.filename);
+                    return (
+                        <div key={index}>
+                            {isImage ? (
+                                <img src={`data:image/png;base64,${media.base64data}`} alt={`Slide ${index}`} />
+                            ) : (
+                                <video autoPlay loop muted>
+                                    <source src={`data:video/mp4;base64,${media.base64data}`} type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                </video>
+                            )}
+                        </div>
+                    );
+                })}
             </Carousel>
         </div>
+
     );
 };
 
