@@ -63,7 +63,7 @@ function App() {
                 <Link to="/upload">Upload</Link>
               </li>
               <li>
-                <Link to="/config">Configurações</Link>
+                <Link to="/config">Sair</Link>
               </li>
               <li>
                 <Link onClick={handleDeleteFiles}>Apagar Arquivos</Link>
