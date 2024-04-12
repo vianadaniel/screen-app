@@ -58,14 +58,14 @@ function App() {
       <Router>
         {!fullscreen && navbarVisible && (
           <nav>
-            <ul>
-              <li>
+            <ul style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <li style={{ marginRight: '30px' }}>
                 <Link to="/upload">Upload</Link>
               </li>
               <li>
                 <Link to="/config">Sair</Link>
               </li>
-              <li>
+              <li style={{ marginLeft: 'auto' }}>
                 <Link onClick={handleDeleteFiles}>Apagar Arquivos</Link>
               </li>
             </ul>
