@@ -55,7 +55,7 @@ function UploadMediaPage({ setCarouselInterval }) {
         if (uploadStatus === "success") {
             setTimeout(() => {
                 window.location.reload();
-            }, 3000);
+            }, 1500);
         }
     }, [uploadStatus]);
 

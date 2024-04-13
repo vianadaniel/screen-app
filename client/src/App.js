@@ -56,7 +56,7 @@ function App() {
       .then(response => response.json())
       .then(data => {
         console.log(data.message); // Exibe a mensagem de sucesso no console
-        // Aqui você pode adicionar lógica adicional, se necessário
+        window.location.reload();
       })
       .catch(error => {
         console.error('Erro ao apagar os arquivos:', error);
