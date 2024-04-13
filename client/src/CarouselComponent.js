@@ -35,23 +35,29 @@ const CarouselComponent = ({ interval }) => {
 
     return (
         <div className="fullscreen-carousel">
-            <Carousel autoPlay interval={interval || 5000} infiniteLoop showThumbs={true} selectedItem={currentIndex}>
-                {mediaItems.map((media, index) => {
-                    const isImage = /\.(png|jpg)$/i.test(media.filename);
-                    return (
-                        <div key={index}>
-                            {isImage ? (
-                                <img src={`data:image/png;base64,${media.base64data}`} alt={`Slide ${index}`} />
-                            ) : (
-                                <video autoPlay loop muted>
-                                    <source src={`data:video/mp4;base64,${media.base64data}`} type="video/mp4" />
-                                    Your browser does not support the video tag.
-                                </video>
-                            )}
-                        </div>
-                    );
-                })}
-            </Carousel>
+            {mediaItems.length === 0 ? (
+                <div className="centered-message">
+                    Adicione um arquivo para iniciar o carrossel.
+                </div>
+            ) : (
+                <Carousel autoPlay interval={interval || 5000} infiniteLoop showThumbs={true} selectedItem={currentIndex}>
+                    {mediaItems.map((media, index) => {
+                        const isImage = /\.(png|jpg)$/i.test(media.filename);
+                        return (
+                            <div key={index}>
+                                {isImage ? (
+                                    <img src={`data:image/png;base64,${media.base64data}`} alt={`Slide ${index}`} />
+                                ) : (
+                                    <video autoPlay loop muted>
+                                        <source src={`data:video/mp4;base64,${media.base64data}`} type="video/mp4" />
+                                        Your browser does not support the video tag.
+                                    </video>
+                                )}
+                            </div>
+                        );
+                    })}
+                </Carousel>
+            )}
         </div>
     );
 };
